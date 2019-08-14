@@ -1,0 +1,4 @@
+{
+    "name": "mock premier league",
+    "dbConnection": "mongodb://localhost:32772/mock-premier-league"
+}
