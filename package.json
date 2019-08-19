@@ -4,7 +4,7 @@
   "description": "app package manager",
   "main": "./src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watchAll --verbose",
     "start": "nodemon ./src/app.js"
   },
   "repository": {
@@ -18,9 +18,17 @@
   },
   "homepage": "https://github.com/IAmThatG/mock-premier-league#readme",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "config": "^3.2.2",
     "express": "^4.17.1",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
     "mongoose": "^5.6.9",
     "nodemon": "^1.19.1"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "supertest": "^4.0.2"
   }
 }
