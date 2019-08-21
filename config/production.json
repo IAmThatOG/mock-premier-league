@@ -1,5 +1,4 @@
 {
     "name": "mock premier league",
-    "dbConnection": "mongodb://localhost:32769/mock-premier-league",
-    "jwtPrivateKey": "MockPremierLeague_JwtPrivateKey_18_08_2019"
+    "dbConnection": "mongodb://localhost:32769/mock-premier-league"
 }
