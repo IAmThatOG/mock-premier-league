@@ -14,7 +14,6 @@ router.post('/', async (req, res, next) => {
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(user.password, salt);
         user.createdAt = Date.now();
-        user._id = new mongoose.Types.ObjectId();
         user = await user.save();
     } catch (error) {
         console.log(error);

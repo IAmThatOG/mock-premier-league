@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const fixtureSchema = new mongoose.Schema({
-    _id: mongoose.Types.ObjectId,
     homeTeam: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Team'
@@ -15,8 +14,8 @@ const fixtureSchema = new mongoose.Schema({
     homeTeamPosession: {type: Number, default: 50},
     awayTeamPosession: {type: Number, default: 50},
     isCompleted: {type:Boolean, default: false},
-    createdAt: {type: Date, required: true},
-    updatedAt: {type: Date, required: true, default: Date.now()}
+    createdAt: {type: Date},
+    updatedAt: {type: Date}
 });
 
 const Fixture = mongoose.model('Fixture', fixtureSchema);

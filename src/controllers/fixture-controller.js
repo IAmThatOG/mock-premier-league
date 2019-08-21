@@ -3,12 +3,12 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Fixture = require('../models/fixture');
 const _ = require('lodash');
+const Auth = require('../middleware/auth-middleware');
 
 router.use(express.json());
 
-router.post('/', async (req, res, next) => {
+router.post('/', Auth.authoriseAdmin, async (req, res, next) => {
     let fixture = new Fixture({
-        _id: new mongoose.Types.ObjectId(),
         homeTeam: req.body.homeTeam,
         awayTeam: req.body.awayTeam,
         homeTeamScore: req.body.homeTeamScore,
@@ -36,7 +36,7 @@ router.post('/', async (req, res, next) => {
     });
 });
 
-router.get('/', async (req, res, next) => {
+router.get('/', Auth.authoriseAll, async (req, res, next) => {
     let fixtures = null;
     try {
         fixtures = await Fixture.find().populate('homeTeam awayTeam');
@@ -56,7 +56,7 @@ router.get('/', async (req, res, next) => {
     });
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', Auth.authoriseAll, async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id))
         return res.status(400).send({
             message: "invalid id"
@@ -84,7 +84,7 @@ router.get('/:id', async (req, res, next) => {
     });
 });
 
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', Auth.authoriseAdmin, async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id))
         return res.status(400).send({
             message: "invalid id"
@@ -102,6 +102,7 @@ router.put('/:id', async (req, res, next) => {
         fixture.awayTeamPosession = req.body.awayTeamPosession;
         fixture.homeTeam = req.body.homeTeam;
         fixture.awayTeam = req.body.awayTeam;
+        fixture.isCompleted = req.body.isCompleted;
         fixture.updatedAt = Date.now();
 
         updatedFixture = await fixture.save();
@@ -131,7 +132,7 @@ router.put('/:id', async (req, res, next) => {
     });
 });
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id',Auth.authoriseAdmin, async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id))
         return res.status(400).send({
             message: "invalid id"

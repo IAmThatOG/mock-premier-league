@@ -6,7 +6,7 @@ const Auth = require('../middleware/auth-middleware');
 
 router.use(express.json());
 
-router.get('/', Auth.authoriseAdmin, async (req, res, next) => {
+router.get('/', Auth.authoriseAll, async (req, res, next) => {
     let teams;
     try {
         teams = await Team.find().sort({
@@ -58,7 +58,6 @@ router.get('/:id', Auth.authoriseAll, async (req, res, next) => {
 
 router.post('/', Auth.authoriseAdmin, async (req, res, next) => {
     let team = new Team({
-        _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
         manager: req.body.manager,
         createdAt: Date.now()
@@ -95,9 +94,7 @@ router.put('/:id', Auth.authoriseAdmin, async (req, res, next) => {
         team.name = req.body.name;
         team.manager = req.body.manager;
         updatedTeam = await team.save();
-        console.log(updatedTeam);
     } catch (error) {
-        console.log(error)
         res.status(500).send({
             "message": "error updating team",
             error: {

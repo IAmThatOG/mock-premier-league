@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 
 const userSchema = new mongoose.Schema({
-    _id: mongoose.Types.ObjectId,
     username: {
         type: String,
         required: true,
@@ -28,8 +27,7 @@ const userSchema = new mongoose.Schema({
         type: Date
     },
     updatedAt: {
-        type: Date,
-        default: Date.now()
+        type: Date
     }
 });
 
