@@ -5,7 +5,10 @@
   "main": "./src/app.js",
   "scripts": {
     "test": "jest --detectOpenHandles --watchAll --verbose",
-    "start": "nodemon ./src/app.js"
+    "start": "NODE_ENV=development node ./src/app.js"
+  },
+  "engines": {
+    "node": "11.12.0"
   },
   "repository": {
     "type": "git",
@@ -19,8 +22,10 @@
   "homepage": "https://github.com/IAmThatG/mock-premier-league#readme",
   "dependencies": {
     "bcrypt": "^3.0.6",
+    "compression": "^1.7.4",
     "config": "^3.2.2",
     "express": "^4.17.1",
+    "helmet": "^3.20.0",
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",

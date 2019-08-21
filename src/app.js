@@ -11,6 +11,10 @@ const authController = require('./controllers/auth-controller');
 
 const app = express();
 
+if (process.env.NODE_ENV === 'production') {
+    require('./middleware/production-middleware')(app);
+}
+
 app.use(Routes.getTeamRoute(), teamControler);
 app.use(Routes.getFixtureRoute(), fixtureController);
 app.use(Routes.getUserRoute(), userController);
