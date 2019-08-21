@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Fixture = require('../models/fixture');
+const _ = require('lodash');
 
 router.use(express.json());
 
@@ -56,6 +57,10 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get('/:id', async (req, res, next) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id))
+        return res.status(400).send({
+            message: "invalid id"
+        });
     let fixture = null;
     try {
         fixture = await Fixture.findById(req.params.id).populate('homeTeam awayTeam');
@@ -80,22 +85,26 @@ router.get('/:id', async (req, res, next) => {
 });
 
 router.put('/:id', async (req, res, next) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id))
+        return res.status(400).send({
+            message: "invalid id"
+        });
     let updatedFixture = null
     try {
         let fixture = await Fixture.findById(req.params.id);
         if (!fixture) return res.status(404).send({
             message: `can't find fixture with id ${req.params.id}`
         });
+
         fixture.homeTeamScore = req.body.homeTeamScore;
         fixture.awayTeamScore = req.body.awayTeamScore;
         fixture.homeTeamPosession = req.body.homeTeamPosession;
         fixture.awayTeamPosession = req.body.awayTeamPosession;
         fixture.homeTeam = req.body.homeTeam;
         fixture.awayTeam = req.body.awayTeam;
+        fixture.updatedAt = Date.now();
 
         updatedFixture = await fixture.save();
-        console.log(updatedFixture.populate('homeTeam awayTeam'));
-        updatedFixture = updatedFixture.populate('homeTeam awayTeam');
     } catch (error) {
         console.log(error)
         res.status(500).send({
@@ -108,23 +117,36 @@ router.put('/:id', async (req, res, next) => {
     }
     return res.status(200).send({
         message: "fixture updated successfully",
-        fixture: updatedFixture
+        fixture: _.pick(updatedFixture,
+            [
+                'homeTeam',
+                'awayTeam',
+                'homeTeamScore',
+                'awayTeamScore',
+                'homeTeamPosession',
+                'awayTeamPosession',
+                'isCompleted',
+                'updatedAt'
+            ])
     });
 });
 
 router.delete('/:id', async (req, res, next) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id))
+        return res.status(400).send({
+            message: "invalid id"
+        });
     let team = null;
     console.log(req.params.id);
     try {
-        team = await Team.findByIdAndDelete(req.params.id);
-        console.log(team);
-        if (!team || team.ok < 1) return res.status(404).send({
+        fixture = await Fixture.findByIdAndDelete(req.params.id);
+        if (!fixture) return res.status(404).send({
             message: `can't find team with id ${req.params.id}`
         });
     } catch (error) {
         console.log(error);
         return res.status(500).send({
-            "message": "error deleting team",
+            "message": "error deleting fixture",
             error: {
                 code: error.code,
                 msg: error.message
@@ -132,8 +154,8 @@ router.delete('/:id', async (req, res, next) => {
         });
     }
     return res.status(200).send({
-        message: "team deleted successfully",
-        deletedTeam: team
+        message: "fixture deleted successfully",
+        deletedFixture: fixture
     });
 });
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const config = require('config');
+require('./db')();
 
 const Routes = require('./routes');
 const teamControler = require('./controllers/team-controller');
@@ -16,10 +17,8 @@ app.use(Routes.getUserRoute(), userController);
 app.use(Routes.getAuthRoute(), authController);
 
 const port = process.env.PORT;
-app.listen(port, () => console.log(`server started at ${port}...`));
+const server = app.listen(port, () => console.log(`server started at ${port}...`));
 
 console.log("Fixture Route", Routes.getFixtureRoute());
 
-mongoose.connect(config.get('dbConnection'), {useNewUrlParser: true, useCreateIndex: true})
-    .then(() => console.log('MongoDB connection established...'))
-    .catch(err => console.log(err));
+module.exports = server;

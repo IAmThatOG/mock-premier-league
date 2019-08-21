@@ -6,8 +6,8 @@ const Auth = require('../middleware/auth-middleware');
 
 router.use(express.json());
 
-router.get('/', Auth.authoriseAll, async (req, res, next) => {
-    let teams = null;
+router.get('/', Auth.authoriseAdmin, async (req, res, next) => {
+    let teams;
     try {
         teams = await Team.find().sort({
             'name': 1
@@ -30,7 +30,7 @@ router.get('/', Auth.authoriseAll, async (req, res, next) => {
 
 router.get('/:id', Auth.authoriseAll, async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id))
-        return res.status(404).send({
+        return res.status(400).send({
             message: "invalid id"
         });
     let team = null;
@@ -83,7 +83,7 @@ router.post('/', Auth.authoriseAdmin, async (req, res, next) => {
 
 router.put('/:id', Auth.authoriseAdmin, async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id))
-        return res.status(404).send({
+        return res.status(400).send({
             message: "invalid id"
         });
     let updatedTeam = null
@@ -114,15 +114,14 @@ router.put('/:id', Auth.authoriseAdmin, async (req, res, next) => {
 
 router.delete('/:id', Auth.authoriseAdmin, async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id))
-        return res.status(404).send({
+        return res.status(400).send({
             message: "invalid id"
         });
     let team = null;
     console.log(req.params.id);
     try {
         team = await Team.findByIdAndDelete(req.params.id);
-        console.log(team);
-        if (!team || team.ok < 1) return res.status(404).send({
+        if (!team) return res.status(404).send({
             message: `can't find team with id ${req.params.id}`
         });
     } catch (error) {
