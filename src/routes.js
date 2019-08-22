@@ -1,3 +1,4 @@
+//holds route values
 class Routes{
     constructor(){
         this.team = '/api/teams';
