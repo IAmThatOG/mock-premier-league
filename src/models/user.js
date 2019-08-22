@@ -38,7 +38,7 @@ userSchema.methods.generateAuthToken = function () {
             role: this.role
         },
         config.get('jwtPrivateKey'), {
-            expiresIn: '1h'
+            expiresIn: 1800
         });
 }
 const User = mongoose.model('User', userSchema);
