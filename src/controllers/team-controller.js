@@ -13,7 +13,6 @@ router.get('/', Auth.authoriseAll, async (req, res, next) => {
             'name': 1
         });
     } catch (error) {
-        console.log(error);
         res.status(500).send({
             "message": "error fetching teams",
             error: {
@@ -37,7 +36,6 @@ router.get('/:id', Auth.authoriseAll, async (req, res, next) => {
     try {
         team = await Team.findById(req.params.id);
     } catch (error) {
-        console.log(error);
         res.status(500).send({
             message: "error getting team by id",
             error: {
@@ -65,7 +63,6 @@ router.post('/', Auth.authoriseAdmin, async (req, res, next) => {
     try {
         team = await team.save();
     } catch (error) {
-        console.log(error);
         return res.status(500).send({
             message: "error creating team",
             error: {
@@ -115,14 +112,12 @@ router.delete('/:id', Auth.authoriseAdmin, async (req, res, next) => {
             message: "invalid id"
         });
     let team = null;
-    console.log(req.params.id);
     try {
         team = await Team.findByIdAndDelete(req.params.id);
         if (!team) return res.status(404).send({
             message: `can't find team with id ${req.params.id}`
         });
     } catch (error) {
-        console.log(error);
         return res.status(500).send({
             "message": "error deleting team",
             error: {
