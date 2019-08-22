@@ -3,7 +3,7 @@ const Routes = require('../routes');
 const User = require('../models/user');
 const db = require('../db');
 const Fixture = require('../models/fixture');
-const Team = require('../models/team');
+const Team = require('../models/tempteam');
 const _ = require('lodash');
 
 describe('/api/fixtures', () => {
