@@ -16,7 +16,6 @@ router.post('/', async (req, res, next) => {
         user.createdAt = Date.now();
         user = await user.save();
     } catch (error) {
-        console.log(error);
         return res.status(500).send({
             message: "error creating user",
             error: {

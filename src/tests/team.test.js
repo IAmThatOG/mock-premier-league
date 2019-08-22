@@ -161,7 +161,6 @@ describe('/api/teams', () => {
             }).generateAuthToken();
 
             let url = `${Routes.getTeamRoute()}/${teams[0]._id}`;
-            console.log('url', url);
             const res = await request(server)
                 .put(url)
                 .set('authorization', `bearer ${token}`)
@@ -210,7 +209,6 @@ describe('/api/teams', () => {
             }).generateAuthToken();
 
             let url = `${Routes.getTeamRoute()}/${teams[0]._id}`;
-            console.log('url', url);
             const res = await request(server)
                 .delete(url)
                 .set('authorization', `bearer ${token}`)

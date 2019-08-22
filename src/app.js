@@ -23,6 +23,4 @@ app.use(Routes.getAuthRoute(), authController);
 const port = process.env.PORT || 5000;
 const server = app.listen(port, () => console.log(`server started at ${port}...`));
 
-console.log("Fixture Route", Routes.getFixtureRoute());
-
 module.exports = server;

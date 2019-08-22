@@ -28,7 +28,6 @@ router.post("/", async (req, res, next) => {
         });
         token = user.generateAuthToken();
     } catch (error) {
-        console.log(error);
         res.status(500).send({
             message: "error authenticating user",
             error: {

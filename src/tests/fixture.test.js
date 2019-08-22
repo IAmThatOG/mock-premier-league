@@ -92,7 +92,6 @@ describe('/api/fixtures', () => {
             }).generateAuthToken();
 
             let url = `${Routes.getFixtureRoute()}/${fixture._id}`;
-            console.log('FixtureID ==> ', fixture._id);
             const res = await request(server).get(url).set('authorization', `bearer ${token}`);
             expect(res.status).toBe(200);
         });
@@ -102,7 +101,6 @@ describe('/api/fixtures', () => {
         it('Should return 401 if client is not authenticated', async () => {
             const res = await request(server).post(Routes.getTeamRoute());
             expect(res.status).toBe(401);
-            console.log('third team ==> ', teams[2]);
         });
 
         it('should return status 403 for user whose not an admin', async () => {

@@ -21,7 +21,6 @@ router.post('/', Auth.authoriseAdmin, async (req, res, next) => {
     try {
         fixture = await fixture.save();
     } catch (error) {
-        console.log(error);
         res.status(500).send({
             "message": "error creating fixture",
             error: {
@@ -41,7 +40,6 @@ router.get('/', Auth.authoriseAll, async (req, res, next) => {
     try {
         fixtures = await Fixture.find().populate('homeTeam awayTeam');
     } catch (error) {
-        console.log(error);
         res.status(500).send({
             "message": "error fetching teams",
             error: {
@@ -65,7 +63,6 @@ router.get('/:id', Auth.authoriseAll, async (req, res, next) => {
     try {
         fixture = await Fixture.findById(req.params.id).populate('homeTeam awayTeam');
     } catch (error) {
-        console.log(error);
         res.status(500).send({
             message: "error getting fixture by id",
             error: {
@@ -107,7 +104,6 @@ router.put('/:id', Auth.authoriseAdmin, async (req, res, next) => {
 
         updatedFixture = await fixture.save();
     } catch (error) {
-        console.log(error)
         res.status(500).send({
             "message": "error updating fixture",
             error: {
@@ -138,14 +134,12 @@ router.delete('/:id',Auth.authoriseAdmin, async (req, res, next) => {
             message: "invalid id"
         });
     let team = null;
-    console.log(req.params.id);
     try {
         fixture = await Fixture.findByIdAndDelete(req.params.id);
         if (!fixture) return res.status(404).send({
             message: `can't find team with id ${req.params.id}`
         });
     } catch (error) {
-        console.log(error);
         return res.status(500).send({
             "message": "error deleting fixture",
             error: {
