@@ -36,7 +36,7 @@ router.post("/", async (req, res, next) => {
             }
         });
     }
-    return res.header('X-Auth-Token', token).status(200).send({
+    return res.header('authorization', `Bearer ${token}`).status(200).send({
         message: "authentication successfull",
         token: token
     });
