@@ -31,7 +31,18 @@ router.post('/', Auth.authoriseAdmin, async (req, res, next) => {
     }
     return res.status(201).send({
         message: "fixture created successfully",
-        fixture: fixture
+        fixture: _.pick(fixture,
+            [
+                '_id',
+                'homeTeam',
+                'awayTeam',
+                'homeTeamScore',
+                'awayTeamScore',
+                'homeTeamPossession',
+                'awayTeamPossession',
+                'isCompleted',
+                'createdAt'
+            ])
     });
 });
 
@@ -128,7 +139,7 @@ router.put('/:id', Auth.authoriseAdmin, async (req, res, next) => {
     });
 });
 
-router.delete('/:id',Auth.authoriseAdmin, async (req, res, next) => {
+router.delete('/:id', Auth.authoriseAdmin, async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id))
         return res.status(400).send({
             message: "invalid id"
